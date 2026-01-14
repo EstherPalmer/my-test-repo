@@ -1,3 +1,3 @@
 # my-test-repo
-Practice for class
-Hello? I'm sp confused
+
+Practice for class Hello? I'm so confused
