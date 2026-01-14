@@ -1,0 +1,35 @@
+library(reshape2)
+library(ecodist)
+
+#setwd("/Users/ats93376/Dropbox/ShariatLab/1_Trainees/Amy/Population_Analyses/Bryan - heatmap")
+#setwd("/Users/ats93376/Desktop")
+#setwd("/Users/amysiceloff/Dropbox/ShariatLab/1_Trainees/Amy/Population_Analyses/Bryan - heatmap")
+
+data="Daily_Sampling_For_Jaccard.txt"
+
+dataset <- read.table(data, sep="\t", header=T, check.names = F, row.names = 1, quote = "") # Load data
+dataset <- t(dataset)
+
+for (i in 1:nrow(dataset))
+{
+  for (j in 1:ncol(dataset))
+  {
+    if(is.na(dataset[i,j]))
+    {
+      dataset[i,j] <- 0
+    }
+  }
+}
+bray_dm <- as.matrix(distance(dataset, method = "jaccard"))
+
+dm.melted = melt(bray_dm)
+colnames(dm.melted)[1] <- "SampleID"
+colnames(dm.melted)[2] <- "variable"
+colnames(dm.melted)[3] <- "value"
+
+# table format
+write.table(dm.melted, file="Daily_sampling_6mon_Jaccard.txt", sep = "\t", row.names = F,
+            col.names = T, quote = F)
+
+# matrix format
+write.csv(bray_dm, file="Daily_sampling_6mon_Jaccard.csv")
